@@ -140,7 +140,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="y0e-QR-fFa"/>
                                 </constraints>
-                                <state key="normal" title="123"/>
                                 <connections>
                                     <action selector="actionChoiseAnswer:" destination="Ob5-gW-tfb" eventType="touchUpInside" id="rZ6-yK-ksm"/>
                                 </connections>
@@ -150,7 +149,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="DWg-h0-9TI"/>
                                 </constraints>
-                                <state key="normal" title="123"/>
                                 <connections>
                                     <action selector="actionChoiseAnswer:" destination="Ob5-gW-tfb" eventType="touchUpInside" id="1s8-vC-6t4"/>
                                 </connections>
@@ -160,7 +158,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="3xE-nF-k2Q"/>
                                 </constraints>
-                                <state key="normal" title="123"/>
                                 <connections>
                                     <action selector="actionChoiseAnswer:" destination="Ob5-gW-tfb" eventType="touchUpInside" id="06B-Ug-Z7W"/>
                                 </connections>
@@ -170,7 +167,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="bed-fT-fli"/>
                                 </constraints>
-                                <state key="normal" title="123"/>
                                 <connections>
                                     <action selector="actionChoiseAnswer:" destination="Ob5-gW-tfb" eventType="touchUpInside" id="QgH-mp-SqQ"/>
                                 </connections>

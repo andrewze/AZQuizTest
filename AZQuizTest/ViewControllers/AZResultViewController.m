@@ -17,6 +17,7 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    
     self.resultLabel.text = [NSString stringWithFormat:@"%ld %%",self.result];
 }
 

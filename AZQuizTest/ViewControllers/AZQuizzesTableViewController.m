@@ -43,6 +43,12 @@
     } onFailure:nil];
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+    
+    [super viewWillAppear:YES];
+    [self.tableView reloadData];
+}
+
 - (NSManagedObjectContext* ) managedObjectContext {
     return [[AZDataManager sharedManager]managedContex];
 }
@@ -77,7 +83,7 @@
     
     [fetchRequest setFetchBatchSize:5];
     
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdAt" ascending:NO];
     
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
     
@@ -156,9 +162,6 @@
     if (requestError) {
         NSLog(@"%@", [requestError localizedDescription]);
     }
-    
-    NSLog(@"itens count = %ld", items.count);
-    
     return items;;
 }
 
@@ -201,24 +204,25 @@
     
     NSURL* backgroundImageURL = [[NSURL alloc]initWithString:quiz.mainPhotoURL];
     NSURLRequest* imageRequest = [NSURLRequest requestWithURL:backgroundImageURL];
-    UIImage* withoutPhoto = nil;
-        
+    
+    cell.imageView.image = nil;
+    
     [cell.mainImage setImageWithURLRequest:imageRequest
-                          placeholderImage:withoutPhoto
+                          placeholderImage:nil
                                    success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
-                                           
-                                        if (quiz.questions == 0) {
-                                            cell.quizStatusLabel.text = @"";
-                                        } else if (quiz.result > 0 && quiz.isCompleted == YES) {
-                                            cell.quizStatusLabel.text = [NSString stringWithFormat:@"Ostatni wynik: %hd %%", quiz.result];
-                                        } else if (quiz.result > 0 && quiz.isCompleted == NO) {
-                                            cell.quizStatusLabel.text = [NSString stringWithFormat:@"Quiz rozwiazany w %lu %%", quiz.lastCompletedQuestionNumber / quiz.questions.count * 100];
-                                        }
-                                           
-                                        weakCell.quizTitleLabel.text = quiz.title;
-                                        weakCell.mainImage.image = image;
-                                           
-                                        [weakCell layoutSubviews];
+                                       
+                                       weakCell.quizTitleLabel.text = quiz.title;
+                                       weakCell.mainImage.image = image;
+
+                                       if (quiz.questions.count == 0) {
+                                           cell.quizStatusLabel.text = @"";
+                                       } else if (quiz.isCompleted == YES) {
+                                           cell.quizStatusLabel.text = [NSString stringWithFormat:@"Ostatni wynik: %hd %%", quiz.result];
+                                       } else if (quiz.isCompleted == NO & quiz.questions > 0) {
+                                           cell.quizStatusLabel.text = [NSString stringWithFormat:@"Quiz rozwiazany w %lu %%", quiz.lastCompletedQuestionNumber / quiz.questions.count * 100];
+                                       }
+                                       
+                                       [weakCell layoutSubviews];
                                            
                                     } failure:nil];
 }
@@ -234,7 +238,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     AZQuiz* selectedQuiz = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    
     
     self.selectedQuizIDNumber = selectedQuiz.idNumber;
     self.selectedQuiz = selectedQuiz;
@@ -252,6 +255,8 @@
         AZQuizViewController* vc = segue.destinationViewController;
         
         vc.quiz = self.selectedQuiz;
+        
+        vc.quiz.result = 0;
     }
 }
 

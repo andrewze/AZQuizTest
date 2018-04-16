@@ -34,9 +34,6 @@
     
     [super viewWillAppear:animated];
     
-    NSLog(@"self.quiz.lastCompletedQuestionNumber = %i",self.quiz.lastCompletedQuestionNumber);
-    NSLog(@"self.quiz.questions.count = %ld",self.quiz.questions.count);
-    
     NSString *predicateString = [NSString stringWithFormat:@"order == %d", self.quiz.lastCompletedQuestionNumber + 1];
     self.currentPredicate = [NSPredicate predicateWithFormat:predicateString];
     
@@ -197,8 +194,6 @@
         AZResultViewController* vc = segue.destinationViewController;
         
         vc.result = self.quiz.result;
-        
-        self.quiz.result = 0;
     }
 }
 
