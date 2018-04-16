@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@interface AZDataManager : NSObject
+@interface AZDataManager : NSObject 
 
 @property (readonly, strong) NSPersistentContainer *persistentContainer;
 @property (readonly, strong) NSManagedObjectContext* managedContex;

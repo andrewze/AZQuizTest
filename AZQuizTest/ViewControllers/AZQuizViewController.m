@@ -9,6 +9,7 @@
 #import "AZQuizViewController.h"
 #import "AZServerManager.h"
 #import "AZDataManager.h"
+#import "AZResultViewController.h"
 
 #import "AZQuestion+CoreDataClass.h"
 #import "AZQuiz+CoreDataClass.h"
@@ -18,6 +19,7 @@
 
 @property (strong, nonatomic) AZQuestion* currentQuestion;
 @property (strong, nonatomic) NSPredicate* currentPredicate;
+@property (assign, nonatomic) float procentSuccessForOneQuestion;
 
 @end
 
@@ -32,7 +34,8 @@
     
     [super viewWillAppear:animated];
     
-    NSLog(@"last = %hd",self.quiz.lastCompletedQuestionNumber);
+    NSLog(@"self.quiz.lastCompletedQuestionNumber = %i",self.quiz.lastCompletedQuestionNumber);
+    NSLog(@"self.quiz.questions.count = %ld",self.quiz.questions.count);
     
     NSString *predicateString = [NSString stringWithFormat:@"order == %d", self.quiz.lastCompletedQuestionNumber + 1];
     self.currentPredicate = [NSPredicate predicateWithFormat:predicateString];
@@ -42,9 +45,11 @@
     } else {
         self.currentQuestion = [[self.quiz.questions filteredSetUsingPredicate:self.currentPredicate]anyObject];
         [self showQuestionInfo];
+        
+        if (self.procentSuccessForOneQuestion == 0) {
+            self.procentSuccessForOneQuestion = 100 / self.quiz.questions.count;
+        }
     }
-
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,10 +61,7 @@
     return [[AZDataManager sharedManager]managedContex];
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
+#pragma mark - Set data
 
 - (void) addQuestions {
     
@@ -73,6 +75,10 @@
                                                              weakSelf.quiz.questions = responceSet;
                                                              weakSelf.currentQuestion = [[weakSelf.quiz.questions filteredSetUsingPredicate:self.currentPredicate]anyObject];
                                                              
+                                                             if (self.procentSuccessForOneQuestion == 0) {
+                                                                 self.procentSuccessForOneQuestion = 100 / self.quiz.questions.count;
+                                                             }
+                                                             
                                                              [self showQuestionInfo];
                                                          }
                                                      }
@@ -85,11 +91,10 @@
     __weak typeof(self) weakSelf = self;
     
     [[AZServerManager sharedManager]getAnswersFromQuizID:self.quiz.idNumber
-                                        toQuestionNumber:self.currentQuestion.order
+                                        toQuestionNumber:self.quiz.lastCompletedQuestionNumber
                                                OnSuccess:^(NSSet *responceSet) {
                                                    
                                                    weakSelf.currentQuestion.answers = responceSet;
-                                                   NSLog(@"count = %lu",self.currentQuestion.answers.count);
                                                    [self setAnswerLabels];
                                                }
                                                onFailure:nil];
@@ -129,35 +134,74 @@
         
         AZAnswer* answer = [array objectAtIndex:i];
         
-        NSLog(@"%@",answer.text);
-        
-        button.titleLabel.text = answer.text;
-        
-        NSLog(@"%@",button.titleLabel.text);
+        [button setTitle:answer.text forState:UIControlStateNormal];
         
         if (answer.isCorrect) {
+            
             button.tag = 1;
+            [button setBackgroundImage:[self imageWithColor:[UIColor greenColor]] forState:UIControlStateHighlighted];
+            
         } else {
+            
             button.tag = 0;
+            [button setBackgroundImage:[self imageWithColor:[UIColor redColor]] forState:UIControlStateHighlighted];
         }
     }
     [self.view setNeedsDisplay];
 }
 
+- (UIImage *)imageWithColor:(UIColor *)color {
+    
+    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
+
 #pragma mark - Actions
 
 - (IBAction)actionChoiseAnswer:(UIButton *)sender {
-    
-    self.quiz.lastCompletedQuestionNumber++;
-    
-    NSLog(@"tag = %ld", sender.tag);
-    
-    if (self.quiz.lastCompletedQuestionNumber < self.quiz.questions.count) {
+
+    if (sender.tag == 1) {
+        self.quiz.result = self.quiz.result + self.procentSuccessForOneQuestion;
+    }
+
+    if (self.quiz.lastCompletedQuestionNumber < self.quiz.questions.count - 1) {
+        
+        self.quiz.lastCompletedQuestionNumber++;
         [self viewWillAppear:YES];
-    } else if (self.quiz.lastCompletedQuestionNumber == self.quiz.questions.count) {
+        
+    } else if (self.quiz.lastCompletedQuestionNumber == self.quiz.questions.count - 1) {
         
         self.quiz.lastCompletedQuestionNumber = 0;
-        NSLog(@"seccess!");
+        self.quiz.isCompleted = YES;
+        
+        [self performSegueWithIdentifier:@"gotoAZResultViewController"
+                                  sender:self];
     }
 }
+
+#pragma mark - Segues
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    if ([segue.destinationViewController isKindOfClass:[AZResultViewController class]]) {
+        
+        AZResultViewController* vc = segue.destinationViewController;
+        
+        vc.result = self.quiz.result;
+        
+        self.quiz.result = 0;
+    }
+}
+
+
+
 @end

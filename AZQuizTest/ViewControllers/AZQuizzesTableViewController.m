@@ -1,12 +1,12 @@
 //
-//  AZQuizzsTableViewController.m
+//  AZQuizzesTableViewController.m
 //  AZQuizTest
 //
 //  Created by andrei zeniukevich on 12/04/2018.
 //  Copyright © 2018 andrei zeniukevich. All rights reserved.
 //
 
-#import "AZQuizzsTableViewController.h"
+#import "AZQuizzesTableViewController.h"
 #import "AZQuizViewController.h"
 #import "AZServerManager.h"
 #import "AZQuizCell.h"
@@ -16,33 +16,32 @@
 #import "AZQuestion+CoreDataClass.h"
 #import "AZAnswer+CoreDataClass.h"
 
-@interface AZQuizzsTableViewController ()
+@interface AZQuizzesTableViewController ()
 
 @property (strong, nonatomic) NSArray* quizzsArray;
 @property (assign, nonatomic) NSInteger selectedQuizIDNumber;
 @property (strong, nonatomic) AZQuiz* selectedQuiz;
-@property (strong, nonatomic) NSString* docsDirectory;
 
 @end
 
-@implementation AZQuizzsTableViewController
+@implementation AZQuizzesTableViewController
 
 @synthesize fetchedResultsController = _fetchedResultsController;
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
+    
+    [[AZServerManager sharedManager]getQuizzsOnSuccess:^(NSArray *objectsArray) {
+        
+        NSArray* quizzesInStore = [self allQuizzes];
+        
+        if (quizzesInStore.count != objectsArray.count) {
+            [self createQuizEntitiesFromArray:objectsArray];
+        }
+        
+    } onFailure:nil];
 }
-
-//- (void)viewWillAppear:(BOOL)animated {
-//
-//    [super viewWillAppear:animated];
-//
-//    [[AZServerManager sharedManager]getQuizzsOnSuccess:^(NSArray *objectsArray) {
-//    
-//            [self createQuizEntitiesFromArray:objectsArray];
-//  
-//    } onFailure:nil];
-//}
 
 - (NSManagedObjectContext* ) managedObjectContext {
     return [[AZDataManager sharedManager]managedContex];
@@ -57,28 +56,13 @@
     for (NSDictionary* dictionary in itemsArray) {
         
         AZQuiz* quiz = [[AZQuiz alloc]initWithContext:self.managedObjectContext];
-        
+
         quiz.idNumber = [[dictionary objectForKey:@"id"]integerValue];
         quiz.title = [dictionary objectForKey:@"title"];
         quiz.createdAt = [dictionary objectForKey:@"createdAt"];
         quiz.mainPhotoURL = [[dictionary objectForKey:@"mainPhoto"]objectForKey:@"url"];
         
     }
-    [[AZDataManager sharedManager]saveContext];
-}
-
-- (NSArray *) allQuizzes {
-    
-    NSFetchRequest* fetchRequest = AZQuiz.fetchRequest;
-    
-    NSSortDescriptor* sortDescription =
-    [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
-    
-    [fetchRequest setSortDescriptors:@[sortDescription]];
-
-    NSArray* allQuizzes = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
-    
-    return allQuizzes;
 }
 
 #pragma mark - Fetched results controller
@@ -159,6 +143,25 @@
     }
 }
 
+- (NSArray*)allQuizzes {
+    
+    NSEntityDescription *entityDescription = AZQuiz.entity;
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    NSError* requestError = nil;
+    
+    [request setEntity:entityDescription];
+    
+    NSArray *items = [self.managedObjectContext executeFetchRequest:request error:&requestError];
+    
+    if (requestError) {
+        NSLog(@"%@", [requestError localizedDescription]);
+    }
+    
+    NSLog(@"itens count = %ld", items.count);
+    
+    return items;;
+}
+
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView endUpdates];
 }
@@ -194,32 +197,36 @@
 
 - (void)configureCell: (AZQuizCell*) cell withQuiz:(AZQuiz*) quiz {
     
-    cell.quizTitleLabel.text = quiz.title;
+    __weak AZQuizCell* weakCell = cell;
     
-    if (quiz.mainPhotoURL) {
+    NSURL* backgroundImageURL = [[NSURL alloc]initWithString:quiz.mainPhotoURL];
+    NSURLRequest* imageRequest = [NSURLRequest requestWithURL:backgroundImageURL];
+    UIImage* withoutPhoto = nil;
         
-        __weak AZQuizCell* weakCell = cell;
-        
-        
-        NSURL* backgroundImageURL = [[NSURL alloc]initWithString:quiz.mainPhotoURL];
-        NSURLRequest* imageRequest = [NSURLRequest requestWithURL:backgroundImageURL];
-        UIImage* withoutPhoto = [UIImage imageNamed:@"Nophoto.png"];
-        
-        [cell.mainImage setImageWithURLRequest:imageRequest
-                              placeholderImage:withoutPhoto
-                                       success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+    [cell.mainImage setImageWithURLRequest:imageRequest
+                          placeholderImage:withoutPhoto
+                                   success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
                                            
-                                           weakCell.mainImage.image = image;
-                                           [weakCell layoutSubviews];
+                                        if (quiz.questions == 0) {
+                                            cell.quizStatusLabel.text = @"";
+                                        } else if (quiz.result > 0 && quiz.isCompleted == YES) {
+                                            cell.quizStatusLabel.text = [NSString stringWithFormat:@"Ostatni wynik: %hd %%", quiz.result];
+                                        } else if (quiz.result > 0 && quiz.isCompleted == NO) {
+                                            cell.quizStatusLabel.text = [NSString stringWithFormat:@"Quiz rozwiazany w %lu %%", quiz.lastCompletedQuestionNumber / quiz.questions.count * 100];
+                                        }
                                            
-                                       } failure:nil];
-    }
+                                        weakCell.quizTitleLabel.text = quiz.title;
+                                        weakCell.mainImage.image = image;
+                                           
+                                        [weakCell layoutSubviews];
+                                           
+                                    } failure:nil];
 }
 
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return (self.view.frame.size.width / 1.5f);
+    return (self.view.frame.size.width / 1.44f);
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -233,8 +240,7 @@
     self.selectedQuiz = selectedQuiz;
     
     [self performSegueWithIdentifier:@"gotoAZQuizViewController"
-                              sender:[self.fetchedResultsController
-                   objectAtIndexPath:indexPath]];
+                              sender:[self.fetchedResultsController objectAtIndexPath:indexPath]];
 }
 
 #pragma mark - Segues

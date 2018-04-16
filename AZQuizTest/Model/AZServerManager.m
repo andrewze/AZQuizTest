@@ -111,9 +111,10 @@
                        }];
 }
 
-- (void) getAnswersFromQuizID:(NSUInteger) idNumber toQuestionNumber:(NSUInteger) questionNumber
-             OnSuccess:(void (^)(NSSet *))success
-             onFailure:(void (^)(NSError *, NSInteger))failure {
+- (void) getAnswersFromQuizID:(NSUInteger) idNumber
+             toQuestionNumber:(NSUInteger) questionNumber
+                    OnSuccess:(void (^)(NSSet *))success
+                    onFailure:(void (^)(NSError *, NSInteger))failure {
     
     [self.operationManager GET:[self.GETQuizURLString stringByAppendingString:[NSString stringWithFormat:@"%ld/0",idNumber]]
                     parameters:nil
@@ -127,7 +128,12 @@
                                
                                AZAnswer* answer = [[AZAnswer alloc]initWithContext:[[AZDataManager sharedManager]managedContex]];
                                
-                               answer.text = [dict objectForKey:@"text"];
+                               if ([[dict objectForKey:@"text"] isKindOfClass:[NSString class]]) {
+                                   answer.text = [dict objectForKey:@"text"];
+                               } else {
+                                   answer.text = [NSString stringWithFormat:@"%ld",[[dict objectForKey:@"text"]integerValue]];
+                               }
+                               
                                answer.isCorrect = [dict objectForKey:@"isCorrect"];
                                
                                [answersSet addObject:answer];   
@@ -146,4 +152,6 @@
                            }
                        }];
 }
+
+
 @end

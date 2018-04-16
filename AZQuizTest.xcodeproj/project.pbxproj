@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3520A490207F717C004EF576 /* AZQuizzsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3520A48F207F717C004EF576 /* AZQuizzsTableViewController.m */; };
+		3520A490207F717C004EF576 /* AZQuizzesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3520A48F207F717C004EF576 /* AZQuizzesTableViewController.m */; };
+		35C85DC620843E640078B383 /* AZResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35C85DC520843E640078B383 /* AZResultViewController.m */; };
 		35CD814C207D214A00EDC0A7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 35CD814B207D214A00EDC0A7 /* AppDelegate.m */; };
 		35CD8152207D214A00EDC0A7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35CD8150207D214A00EDC0A7 /* Main.storyboard */; };
 		35CD8155207D214A00EDC0A7 /* AZQuizTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 35CD8153207D214A00EDC0A7 /* AZQuizTest.xcdatamodeld */; };
@@ -36,8 +37,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3520A48E207F717C004EF576 /* AZQuizzsTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AZQuizzsTableViewController.h; sourceTree = "<group>"; };
-		3520A48F207F717C004EF576 /* AZQuizzsTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AZQuizzsTableViewController.m; sourceTree = "<group>"; };
+		3520A48E207F717C004EF576 /* AZQuizzesTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AZQuizzesTableViewController.h; sourceTree = "<group>"; };
+		3520A48F207F717C004EF576 /* AZQuizzesTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AZQuizzesTableViewController.m; sourceTree = "<group>"; };
+		35C85DC420843E640078B383 /* AZResultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AZResultViewController.h; sourceTree = "<group>"; };
+		35C85DC520843E640078B383 /* AZResultViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AZResultViewController.m; sourceTree = "<group>"; };
 		35CD8147207D214A00EDC0A7 /* AZQuizTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AZQuizTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		35CD814A207D214A00EDC0A7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		35CD814B207D214A00EDC0A7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -123,7 +126,6 @@
 				35CD8176207DF0C000EDC0A7 /* AFNetworking */,
 				35CD8166207D2B6500EDC0A7 /* ViewControllers */,
 				35CD816B207D2C2900EDC0A7 /* Cells */,
-				35CD814B207D214A00EDC0A7 /* AppDelegate.m */,
 				35CD81A9207E0CC100EDC0A7 /* Model */,
 				35CD8150207D214A00EDC0A7 /* Main.storyboard */,
 				35CD8156207D214A00EDC0A7 /* Assets.xcassets */,
@@ -131,7 +133,7 @@
 				35CD815B207D214A00EDC0A7 /* Info.plist */,
 				35CD815C207D214A00EDC0A7 /* main.m */,
 				35CD814A207D214A00EDC0A7 /* AppDelegate.h */,
-				35CD8153207D214A00EDC0A7 /* AZQuizTest.xcdatamodeld */,
+				35CD814B207D214A00EDC0A7 /* AppDelegate.m */,
 			);
 			path = AZQuizTest;
 			sourceTree = "<group>";
@@ -139,10 +141,12 @@
 		35CD8166207D2B6500EDC0A7 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				3520A48E207F717C004EF576 /* AZQuizzsTableViewController.h */,
-				3520A48F207F717C004EF576 /* AZQuizzsTableViewController.m */,
+				3520A48E207F717C004EF576 /* AZQuizzesTableViewController.h */,
+				3520A48F207F717C004EF576 /* AZQuizzesTableViewController.m */,
 				35D521012080BE53002ADFE1 /* AZQuizViewController.h */,
 				35D521022080BE53002ADFE1 /* AZQuizViewController.m */,
+				35C85DC420843E640078B383 /* AZResultViewController.h */,
+				35C85DC520843E640078B383 /* AZResultViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -219,6 +223,7 @@
 				35CD8164207D29D500EDC0A7 /* AZDataManager.m */,
 				35CD8173207DF08600EDC0A7 /* AZServerManager.h */,
 				35CD8174207DF08600EDC0A7 /* AZServerManager.m */,
+				35CD8153207D214A00EDC0A7 /* AZQuizTest.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -301,11 +306,12 @@
 				35CD8175207DF08600EDC0A7 /* AZServerManager.m in Sources */,
 				35CD81A0207DF0C000EDC0A7 /* UIWebView+AFNetworking.m in Sources */,
 				35CD81A2207DF0C000EDC0A7 /* AFImageDownloader.m in Sources */,
-				3520A490207F717C004EF576 /* AZQuizzsTableViewController.m in Sources */,
+				3520A490207F717C004EF576 /* AZQuizzesTableViewController.m in Sources */,
 				35CD81A5207DF0C000EDC0A7 /* AFURLSessionManager.m in Sources */,
 				35CD819B207DF0C000EDC0A7 /* UIRefreshControl+AFNetworking.m in Sources */,
 				35CD819C207DF0C000EDC0A7 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				35CD81A1207DF0C000EDC0A7 /* AFAutoPurgingImageCache.m in Sources */,
+				35C85DC620843E640078B383 /* AZResultViewController.m in Sources */,
 				35CD819F207DF0C000EDC0A7 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				35CD81A6207DF0C000EDC0A7 /* AFURLRequestSerialization.m in Sources */,
 				35CD81A3207DF0C000EDC0A7 /* AFURLResponseSerialization.m in Sources */,
@@ -452,6 +458,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = AZQuizTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = AZ.AZQuizTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -465,6 +472,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = AZQuizTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = AZ.AZQuizTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";

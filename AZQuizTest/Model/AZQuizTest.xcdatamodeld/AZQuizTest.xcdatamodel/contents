@@ -17,6 +17,7 @@
     <entity name="AZQuiz" representedClassName="AZQuiz" syncable="YES" codeGenerationType="class">
         <attribute name="createdAt" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="idNumber" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isCompleted" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="lastCompletedQuestionNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="mainPhotoURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="result" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="100" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -26,6 +27,6 @@
     <elements>
         <element name="AZAnswer" positionX="538" positionY="99" width="128" height="105"/>
         <element name="AZQuestion" positionX="331" positionY="-45" width="128" height="135"/>
-        <element name="AZQuiz" positionX="108" positionY="-184" width="128" height="150"/>
+        <element name="AZQuiz" positionX="108" positionY="-184" width="128" height="165"/>
     </elements>
 </model>
