@@ -15,4 +15,11 @@
 - (void) getQuizzsOnSuccess:(void (^)(NSArray *))success
                   onFailure:(void (^)(NSError *, NSInteger))failure;
 
+- (void) getQuizQuestionsWithQuizID:(NSUInteger) idNumber
+                          OnSuccess:(void (^)(NSMutableSet *))success
+                          onFailure:(void (^)(NSError *, NSInteger))failure;
+
+- (void) getAnswersFromQuizID:(NSUInteger) idNumber toQuestionNumber:(NSUInteger) questionNumber
+                    OnSuccess:(void (^)(NSSet *))success
+                    onFailure:(void (^)(NSError *, NSInteger))failure;
 @end

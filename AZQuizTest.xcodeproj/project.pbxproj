@@ -32,6 +32,7 @@
 		35CD81A6207DF0C000EDC0A7 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 35CD8195207DF0C000EDC0A7 /* AFURLRequestSerialization.m */; };
 		35CD81A7207DF0C000EDC0A7 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 35CD8197207DF0C000EDC0A7 /* AFNetworkReachabilityManager.m */; };
 		35CD81A8207DF0C000EDC0A7 /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 35CD8198207DF0C000EDC0A7 /* AFSecurityPolicy.m */; };
+		35D521032080BE53002ADFE1 /* AZQuizViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D521022080BE53002ADFE1 /* AZQuizViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,6 +86,8 @@
 		35CD8197207DF0C000EDC0A7 /* AFNetworkReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkReachabilityManager.m; sourceTree = "<group>"; };
 		35CD8198207DF0C000EDC0A7 /* AFSecurityPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFSecurityPolicy.m; sourceTree = "<group>"; };
 		35CD8199207DF0C000EDC0A7 /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPSessionManager.h; sourceTree = "<group>"; };
+		35D521012080BE53002ADFE1 /* AZQuizViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AZQuizViewController.h; sourceTree = "<group>"; };
+		35D521022080BE53002ADFE1 /* AZQuizViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AZQuizViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +141,8 @@
 			children = (
 				3520A48E207F717C004EF576 /* AZQuizzsTableViewController.h */,
 				3520A48F207F717C004EF576 /* AZQuizzsTableViewController.m */,
+				35D521012080BE53002ADFE1 /* AZQuizViewController.h */,
+				35D521022080BE53002ADFE1 /* AZQuizViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -290,6 +295,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				35CD814C207D214A00EDC0A7 /* AppDelegate.m in Sources */,
+				35D521032080BE53002ADFE1 /* AZQuizViewController.m in Sources */,
 				35CD81A4207DF0C000EDC0A7 /* AFHTTPSessionManager.m in Sources */,
 				35CD81A8207DF0C000EDC0A7 /* AFSecurityPolicy.m in Sources */,
 				35CD8175207DF08600EDC0A7 /* AZServerManager.m in Sources */,
